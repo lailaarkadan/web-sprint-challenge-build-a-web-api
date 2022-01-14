@@ -1,10 +1,11 @@
 // add middlewares here related to projects
+
 const Projects = require('./projects-model')
 
 async function validateProjectId(req, res, next) {
     try{
         const projectId = await Projects.get(req.params.id)
-        if(!projectId) {
+        if(projectId) {
             req.projects = projectId
             next()
         } else {
@@ -24,7 +25,18 @@ const validateProject = (req, res, next) => {
     
   }
 
+
+
 module.exports = {
     validateProjectId,
     validateProject
 }
+
+
+
+
+
+
+
+
+

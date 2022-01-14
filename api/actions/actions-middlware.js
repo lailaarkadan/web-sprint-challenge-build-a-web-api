@@ -1,30 +1,34 @@
 // add middlewares here related to actions
-const Actions = require('./actions-model')
-async function validateActionId(req, res, next) {
+const Action = require('./actions-model')
+
+async function checkId(req, res, next){
     try{
-        const ActionId = await Actions.get(req.params.id)
-        if(!ActionId) {
-            req.projects = ActionId
+        const possible = await Action.get(req.params.id)
+        if(possible) {
+            req.action = possible
             next()
         } else {
-            next({ status: 404, message: 'action not found' })
+            next({ status: 404, message: "action not found" })
         }
-    }catch (err) {
+    }catch(err){
         next(err)
     }
 }
 
-const validateAction = (req, res, next) => {
-    if(!req.body.project_id || !req.body.description || !req.body.notes){
-      res.status(400).json({ message: "missing requirements" })
+function checkCompletion(req, res, next) {
+    const {description, notes, completed, project_id} = req.body
+    if(description === undefined|| project_id === undefined || completed === undefined || project_id === undefined|| notes === undefined){
+        res.status(400).json({ message: "missing required description, notes and completed status" })
     }else{
-      next()
+        req.description = description
+        req.notes = notes
+        req.completed = completed
+        req.project_id = project_id
+        next()
     }
-    
-  }
+}
 
 module.exports = {
-    validateActionId,
-    validateAction
-   
+    checkId,
+    checkCompletion
 }
