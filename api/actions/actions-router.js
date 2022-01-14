@@ -18,7 +18,7 @@ router.get('/:id',checkId,(req, res) => {
 })
 
 
-router.post('/',checkId, async (req, res, next) => {
+router.post('/',checkCompletion, async (req, res, next) => {
     try {
         const newAction = await Actions.insert(req.body)
         res.status(201).json(newAction)

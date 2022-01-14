@@ -14,11 +14,10 @@ async function checkId(req, res, next){
         next(err)
     }
 }
-
 function checkCompletion(req, res, next) {
     const {description, notes, completed, project_id} = req.body
     if(description === undefined|| project_id === undefined || completed === undefined || project_id === undefined|| notes === undefined){
-        res.status(400).json({ message: "missing required description, notes and completed status" })
+        res.status(400).json({ message: "missing" })
     }else{
         req.description = description
         req.notes = notes
